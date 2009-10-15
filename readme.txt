@@ -1,6 +1,6 @@
 === SubHeading ===
 Contributors: 36Flavours
-Tags: sub, heading, title, admin, template, page, post
+Tags: sub, heading, title, admin, template, page, post, byline
 Requires at least: 2.8.2
 Tested up to: 2.8.4
 Stable tag: 0.1
