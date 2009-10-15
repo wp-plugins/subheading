@@ -31,6 +31,10 @@ Sub headings can be disabled for posts by defining WPSH_POSTS in your functions 
 
 The field name used is "_subheading", the underscore prefix prevents it from being displayed in the list of custom fields.
 
+== Screenshots ==
+
+1. The Sub Heading option is displayed directly below the main title.
+
 == Changelog ==
 
 = 0.1 =
