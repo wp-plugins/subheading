@@ -50,6 +50,7 @@ function the_subheading($before='', $after='', $display=true, $id=false)
 			return $subheading;
 		}
 	}
+	return null;
 }
 function get_the_subheading($id, $before='', $after='', $display=true)
 {
