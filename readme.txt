@@ -2,8 +2,8 @@
 Contributors: 36Flavours
 Tags: sub, heading, title, admin, template, page, post, byline
 Requires at least: 2.8.2
-Tested up to: 2.8.4
-Stable tag: 0.1
+Tested up to: 2.8.5
+Stable tag: 0.2
 
 Adds the ability to show a subtitle for posts and pages using a custom field.
 
@@ -37,5 +37,7 @@ The field name used is "_subheading", the underscore prefix prevents it from bei
 
 == Changelog ==
 
+= 0.2 =
+* Tested up to 2.8.5 and began optimisation of the included files.
 = 0.1 =
 * This is the very first version.
