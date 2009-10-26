@@ -3,7 +3,7 @@
 Plugin Name: SubHeading
 Plugin URI: http://wordpress.org/extend/plugins/subheading/
 Description: Adds the ability to show a subheading for posts and pages using a custom field. To display subheadings place <code>&lt;?php the_subheading(); ?&gt;</code> in your template file. 
-Version: 0.2
+Version: 0.2.1
 Author: 36Flavours
 Author URI: http://36flavours.com
 */
@@ -42,11 +42,13 @@ function wpsh_value($id=false)
 function the_subheading($before='', $after='', $display=true, $id=false)
 {
 	global $post;
-	$subtitle = $before.wpsh_value().$after;
-	if ($display) {
-		echo $subtitle;
-	} else {
-		return $subtitle;
+	if ($value = wpsh_value()) {
+		$subheading = $before.$value.$after;
+		if ($display) {
+			echo $subheading;
+		} else {
+			return $subheading;
+		}
 	}
 }
 function get_the_subheading($id, $before='', $after='', $display=true)
