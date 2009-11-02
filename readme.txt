@@ -19,9 +19,9 @@ Here we go:.
 
 1. Upload the `subheading` folder to the `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
-3. Place `<?php the_subheading(); ?>` in your template files
+3. Place `<?php if (function_exists('the_subheading')) { the_subheading(); } ?>` in your template files
 
-If you are not within the_loop, you can use get_the_subheading($postID); to fetch the value for a particular post.
+If you are not within `the_loop`, you can use `get_the_subheading($postID);` to fetch the value for a particular post.
 
 Sub headings can be disabled for posts by defining WPSH_POSTS in your functions file and setting the value to false `define('WPSH_POSTS', false);`.
 
@@ -29,7 +29,7 @@ Sub headings can be disabled for posts by defining WPSH_POSTS in your functions 
 
 = What custom field name does it use? =
 
-The field name used is "_subheading", the underscore prefix prevents it from being displayed in the list of custom fields.
+The field name used is `_subheading`, the underscore prefix prevents it from being displayed in the list of custom fields.
 
 == Screenshots ==
 

@@ -17,7 +17,7 @@ function wpsh_panels()
 }
 function wpsh_render()
 {
-	include_once('panel.html');
+	include_once('panel.php');
 }
 function wpsh_save($post_id)
 {
