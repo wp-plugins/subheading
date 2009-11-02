@@ -7,12 +7,7 @@
 	});
 </script>
 <style type="text/css">
-	#wp_subheading {
-		width: 100%;
-		padding: 5px;
-		font-size: 13px;
-		margin-top: 3px;
-	}
+	#wp_subheading { width: 100%; padding: 5px; font-size: 13px; margin-top: 3px; }
 </style>
-<input type="hidden" name="wpsh_noncename" id="wpsh_noncename" value="<?=wp_create_nonce('wp_subheading')?>" />
+<?=wp_nonce_field('wp_subheading', '_subheadingnonce')?>
 <input type="text" autocomplete="off" id="wp_subheading" name="wpsh_value" value="<?=wpsh_value()?>" />
