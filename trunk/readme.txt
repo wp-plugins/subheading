@@ -3,7 +3,7 @@ Contributors: 36Flavours
 Tags: sub, heading, title, admin, template, page, post, byline
 Requires at least: 2.8.2
 Tested up to: 2.8.5
-Stable tag: 0.2.1
+Stable tag: 0.2.2
 
 Adds the ability to show a subtitle for posts and pages using a custom field.
 
@@ -19,7 +19,7 @@ Here we go:.
 
 1. Upload the `subheading` folder to the `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
-3. Place `<?php if (function_exists('the_subheading')) { the_subheading(); } ?>` in your template files
+3. Place `<?php if (function_exists('the_subheading')) { the_subheading('<p>', '</p>'); } ?>` in your template files
 
 If you are not within `the_loop`, you can use `get_the_subheading($postID);` to fetch the value for a particular post.
 
@@ -37,6 +37,8 @@ The field name used is `_subheading`, the underscore prefix prevents it from bei
 
 == Changelog ==
 
+= 0.2.2 =
+* Bug fix nonce checking.
 = 0.2.1 =
 * Bug fix to prevent output of before and after text with no subheading value.
 = 0.2 =
