@@ -3,7 +3,7 @@ Contributors: 36Flavours
 Tags: sub, heading, title, admin, template, page, post, byline
 Requires at least: 2.8.2
 Tested up to: 2.8.6
-Stable tag: 0.2.4
+Stable tag: 0.3
 
 Adds the ability to show a subtitle for posts and pages using a custom field.
 
@@ -31,12 +31,18 @@ Sub headings can be disabled for posts by defining WPSH_POSTS in your functions 
 
 The field name used is `_subheading`, the underscore prefix prevents it from being displayed in the list of custom fields.
 
+= How can I prevent the subheading appearing in my RSS feed? =
+
+Define WPSH_RSS in your functions file and set the value to false `define('WPSH_RSS', false);`.
+
 == Screenshots ==
 
 1. The Sub Heading option is displayed directly below the main title.
 
 == Changelog ==
 
+= 0.3 =
+* Appended subheading to RSS feed post title.
 = 0.2.4 =
 * Double encoding bug fix.
 = 0.2.3 =
