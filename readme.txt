@@ -3,7 +3,7 @@ Contributors: 36Flavours
 Tags: sub, heading, title, admin, template, page, post, byline
 Requires at least: 2.8.2
 Tested up to: 2.8.6
-Stable tag: 0.2.3
+Stable tag: 0.2.4
 
 Adds the ability to show a subtitle for posts and pages using a custom field.
 
@@ -15,7 +15,7 @@ The custom sub heading field is re-positioned so it is directly below the main t
 
 == Installation ==
 
-Here we go:.
+Here we go:
 
 1. Upload the `subheading` folder to the `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
@@ -37,6 +37,8 @@ The field name used is `_subheading`, the underscore prefix prevents it from bei
 
 == Changelog ==
 
+= 0.2.4 =
+* Double encoding bug fix.
 = 0.2.3 =
 * Fixed / added escaping to admin output (via achellios) and ability to use HTML tags.
 = 0.2.2 =
