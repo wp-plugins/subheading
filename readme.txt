@@ -3,7 +3,7 @@ Contributors: 36Flavours
 Tags: sub, heading, title, admin, template, page, post, byline
 Requires at least: 2.8.2
 Tested up to: 2.8.6
-Stable tag: 0.3
+Stable tag: 0.3.1
 
 Adds the ability to show a subtitle for posts and pages using a custom field.
 
@@ -41,6 +41,8 @@ Define WPSH_RSS in your functions file and set the value to false `define('WPSH_
 
 == Changelog ==
 
+= 0.3.1 =
+* Fixed character encoding issue.
 = 0.3 =
 * Appended subheading to RSS feed post title.
 = 0.2.4 =
