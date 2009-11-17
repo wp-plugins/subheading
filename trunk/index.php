@@ -72,7 +72,7 @@ function wpsh_columnValue($column_name, $post_id)
 }
 function wpsh_enqueue_js($hook)
 {
-	if ($hook == 'edit.php') {
+	if ($hook == 'edit.php' || $hook == 'edit-pages.php') {
 		wp_enqueue_script('wp_subheading', WP_PLUGIN_URL.'/subheading/admin.js');
 		add_filter('manage_posts_columns', 'wpsh_columnHeading');
 		add_filter('manage_posts_custom_column', 'wpsh_columnValue', 10, 2);
