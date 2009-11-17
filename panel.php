@@ -1,4 +1,6 @@
-<script type="text/javascript">
+<?php
+if (!defined('WPSH_STATIC') || WPSH_STATIC !== true) :
+?><script type="text/javascript">
 	jQuery(function() {
 		jQuery("#wpsh_panel")
 			.hide()
@@ -6,6 +8,7 @@
 			.appendTo("#titlewrap");
 	});
 </script>
+<?php endif; ?>
 <style type="text/css">
 	#wp_subheading { width: 100%; padding: 5px; font-size: 13px; margin-top: 3px; }
 </style>

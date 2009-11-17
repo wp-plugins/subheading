@@ -35,12 +35,28 @@ The field name used is `_subheading`, the underscore prefix prevents it from bei
 
 Define WPSH_RSS in your functions file and set the value to false `define('WPSH_RSS', false);`.
 
+= What if I want to include shortcodes in my subheading? =
+
+I suggest replacing the existing method of including the subheading with something like:
+
+`<?php if (function_exists('the_subheading')) { echo do_shortcode(the_subheading('<p>', '</p>', false)); } ?>`
+
+This will apply any existing shortcode filters to the subheading value you have set.
+
+= How can I prevent the subheading input moving to the top of the edit page? =
+
+Some plugins will hide the element containing the post title, which is this element that the subheading input is appended to.
+
+To prevent the repositioning of the input, define WPSH_STATIC and set the value to true `define('WPSH_STATIC', true);`.
+
 == Screenshots ==
 
 1. The Sub Heading option is displayed directly below the main title.
 
 == Changelog ==
 
+= 0.3.3 =
+* Added ability to prevent repositioning of the subheading input on edit page.
 = 0.3.2 =
 * Fixed get_the_subheading function to return correctly.
 = 0.3.1 =
