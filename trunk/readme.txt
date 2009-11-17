@@ -57,6 +57,7 @@ To prevent the repositioning of the input, define WPSH_STATIC and set the value 
 
 = 0.3.3 =
 * Added ability to prevent repositioning of the subheading input on edit page.
+* SubHeadings are now displayed on admin edit posts / pages lists.
 = 0.3.2 =
 * Fixed get_the_subheading function to return correctly.
 = 0.3.1 =
