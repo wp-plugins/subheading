@@ -61,6 +61,26 @@ function wpsh_rss($title) {
 	}
 	return $title;
 }
+function wpsh_columnHeading($columns)
+{
+	$columns['subtitle'] = "SubHeading";
+	return $columns;
+}
+function wpsh_columnValue($column_name, $post_id)
+{
+	echo get_the_subheading($post_id);
+}
+function wpsh_enqueue_js($hook)
+{
+	if ($hook == 'edit.php') {
+		wp_enqueue_script('wp_subheading', WP_PLUGIN_URL.'/subheading/admin.js');
+		add_filter('manage_posts_columns', 'wpsh_columnHeading');
+		add_filter('manage_posts_custom_column', 'wpsh_columnValue', 10, 2);
+		add_filter('manage_pages_columns', 'wpsh_columnHeading');
+		add_filter('manage_pages_custom_column', 'wpsh_columnValue', 10, 2);
+	}
+}
+add_action('admin_enqueue_scripts','wpsh_enqueue_js', 10, 1);
 add_action('admin_menu', 'wpsh_panels');
 add_action('save_post', 'wpsh_save');
 add_filter('the_title_rss', 'wpsh_rss');
