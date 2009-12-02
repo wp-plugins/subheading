@@ -43,6 +43,14 @@ if (array_key_exists('updated', $_GET)) :
 					</label>
 				</td>
 			</tr>
+			<tr valign="top">
+				<td>
+					<label for="subheading[tidy]">
+						<input name="subheading[tidy]" type="checkbox" id="subheading[tidy]" value="1" <?php checked('1', $this->options['tidy']); ?> />
+						Remove all subheadings when deactivated.
+					</label>
+				</td>
+			</tr>
 		</table>
 		<p class="submit">
 			<input type="submit" name="Submit" class="button-primary" value="<?php _e('Save Changes'); ?>" />

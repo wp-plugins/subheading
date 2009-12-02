@@ -1,5 +1,6 @@
 === SubHeading ===
 Contributors: 36Flavours
+Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=HHRDCSQBLHFY4&lc=GB&item_name=Steve%20Whiteley%20%2836Flavours%29&currency_code=GBP&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted
 Tags: sub, heading, title, admin, template, page, post, byline, rss
 Requires at least: 2.8.2
 Tested up to: 2.8.6
@@ -63,6 +64,9 @@ You can prevent the repositioning of the input via the options page.
 
 == Changelog ==
 
+= 1.1 =
+* Added option to allow headings to be completely removed when deactivating the plugin.
+* Inclusion of Donate link ;)
 = 1.0 =
 * Converted plugin to a class based structure.
 * Added new plugin settings pages with default actions.
