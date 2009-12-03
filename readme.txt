@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=HHRDC
 Tags: sub, heading, title, admin, template, page, post, byline, rss
 Requires at least: 2.8.2
 Tested up to: 2.8.6
-Stable tag: 1.2
+Stable tag: 1.2.1
 
 Adds the ability to easily add and display a sub title/heading on both posts and pages.
 
@@ -62,6 +62,8 @@ You can prevent the repositioning of the input via the options page.
 
 == Changelog ==
 
+= 1.2.1 =
+* Fixed plugin settings link on plugins page.
 = 1.2 =
 * Added auto shortcode parsing option.
 * Appended link to settings on plugins overview page.
