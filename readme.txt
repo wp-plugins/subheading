@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=HHRDC
 Tags: sub, heading, title, admin, template, page, post, byline, rss
 Requires at least: 2.8.2
 Tested up to: 2.8.6
-Stable tag: 1.1
+Stable tag: 1.2
 
 Adds the ability to easily add and display a sub title/heading on both posts and pages.
 
@@ -41,13 +41,11 @@ The field name used is `_subheading`, the underscore prefix prevents it from bei
 
 = How can I append the subheading to my RSS feed? =
 
-Check the RSS option on the settings page`Plugins > SubHeading > Append to RSS feeds`.
+Check the RSS option on the settings page `Plugins > SubHeading > Append to RSS feeds`.
 
 = What if I want to include shortcodes in my subheading? =
 
-I suggest replacing the existing method of including the subheading with something like:
-
-`<?php if (function_exists('the_subheading')) { echo do_shortcode(the_subheading('<p>', '</p>', false)); } ?>`
+Check the apply shortcode filters option on the settings page `Plugins > SubHeading > Apply shortcode filters`.
 
 This will apply any existing shortcode filters to the subheading value you have set.
 
@@ -64,6 +62,10 @@ You can prevent the repositioning of the input via the options page.
 
 == Changelog ==
 
+= 1.2 =
+* Added auto shortcode parsing option.
+* Appended link to settings on plugins overview page.
+* Modified tidy setting so that options are not reset when updating the plugin.
 = 1.1 =
 * Added option to allow headings to be completely removed when deactivating the plugin.
 * Inclusion of Donate link ;)

@@ -45,9 +45,17 @@ if (array_key_exists('updated', $_GET)) :
 			</tr>
 			<tr valign="top">
 				<td>
+					<label for="subheading[tags]">
+						<input name="subheading[tags]" type="checkbox" id="subheading[tags]" value="1" <?php checked('1', $this->options['tags']); ?> />
+						Apply shortcode filters.
+					</label>
+				</td>
+			</tr>
+			<tr valign="top">
+				<td>
 					<label for="subheading[tidy]">
 						<input name="subheading[tidy]" type="checkbox" id="subheading[tidy]" value="1" <?php checked('1', $this->options['tidy']); ?> />
-						Remove all subheadings when deactivated.
+						Remove all traces of plugin on deactivation.
 					</label>
 				</td>
 			</tr>

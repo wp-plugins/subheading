@@ -3,7 +3,7 @@
 Plugin Name: SubHeading
 Plugin URI: http://wordpress.org/extend/plugins/subheading/
 Description: Adds the ability to show a subheading for posts and pages using a custom field. To display subheadings place <code>&lt;?php the_subheading(); ?&gt;</code> in your template file. 
-Version: 1.1
+Version: 1.2
 Author: 36Flavours
 Author URI: http://36flavours.com
 */
@@ -26,17 +26,19 @@ if (!class_exists('SubHeading')) {
 				if (isset($this->options['lists'])) {
 					add_action('admin_enqueue_scripts', array(&$this, 'admin'), 10, 1);
 				}
+				add_filter('plugin_row_meta', array(&$this, 'settings_meta'), 10, 2);
 			}
 			add_filter('the_title_rss', array(&$this, 'rss'));
 			add_filter('the_subheading', array(&$this, 'build'), 1);
 		}
 		function activate()
 		{
-			update_option($this->tag, array(
-				'rss' => 1,
-				'lists' => 1,
-				'tidy' => 1
-			));
+			if (!$this->options) {
+				update_option($this->tag, array(
+					'rss' => 1,
+					'lists' => 1
+				));
+			}
 		}
 		function deactivate()
 		{
@@ -45,13 +47,16 @@ if (!class_exists('SubHeading')) {
 				foreach ($posts as $post) {
 					delete_post_meta($post->ID, '_subheading');
 				}
+				update_option($this->tag, null);
 			}
-			delete_option($this->tag);
 		}
 		function build($args)
 		{
 			extract($args);
 			if ($value = $this->value($args['id'])) {
+				if ($this->options['tags']) {
+					$value = do_shortcode($value);
+				}
 				$subheading = $before.$value.$after;
 				if ($display == true) {
 					echo $subheading;
@@ -147,6 +152,20 @@ if (!class_exists('SubHeading')) {
 		function settings_page()
 		{
 			include_once('settings.php');
+		}
+		function settings_meta($links, $file)
+		{
+			$plugin = plugin_basename(__FILE__);
+			if ($file == $plugin) {
+				return array_merge(
+					$links,
+					array(sprintf(
+						'<a href="'.__FILE__.'?page=%s">%s</a>',
+						$this->tag, __('Settings')
+					))
+				);
+			}
+			return $links;
 		}
 	}
 	$subHeading = new SubHeading();
