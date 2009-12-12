@@ -3,7 +3,7 @@
 Plugin Name: SubHeading
 Plugin URI: http://wordpress.org/extend/plugins/subheading/
 Description: Adds the ability to show a subheading for posts and pages using a custom field. To display subheadings place <code>&lt;?php the_subheading(); ?&gt;</code> in your template file. 
-Version: 1.2.1
+Version: 1.3
 Author: 36Flavours
 Author URI: http://36flavours.com
 */
@@ -13,10 +13,12 @@ if (!class_exists('SubHeading')) {
 		var $name = 'SubHeading';
 		var $tag = 'subheading';
 		var $meta_key;
-		var $options;
+		var $options = array();
 		function SubHeading()
 		{
-			$this->options = get_option($this->tag);
+			if ($options = get_option($this->tag)) {
+				$this->options = $options;
+			}	
 			$this->meta_key = '_'.$this->tag;
 			if (is_admin()) {
 				add_action('admin_menu', array(&$this, 'meta'));
@@ -35,6 +37,7 @@ if (!class_exists('SubHeading')) {
 		{
 			if (!$this->options) {
 				update_option($this->tag, array(
+					'posts' => 1,
 					'rss' => 1,
 					'lists' => 1
 				));
@@ -42,7 +45,7 @@ if (!class_exists('SubHeading')) {
 		}
 		function deactivate()
 		{
-			if ($this->options['tidy']) {
+			if (isset($this->options['tidy'])) {
 				$posts = get_posts('numberposts=-1&post_type=any&meta_key=_subheading');
 				foreach ($posts as $post) {
 					delete_post_meta($post->ID, '_subheading');
@@ -53,8 +56,8 @@ if (!class_exists('SubHeading')) {
 		function build($args)
 		{
 			extract($args);
-			if ($value = $this->value($args['id'])) {
-				if ($this->options['tags']) {
+			if ($value = $this->value($id)) {
+				if (isset($this->options['tags'])) {
 					$value = do_shortcode($value);
 				}
 				$subheading = $before.$value.$after;
@@ -111,7 +114,7 @@ if (!class_exists('SubHeading')) {
 		}
 		function column_value($column_name, $post_id)
 		{
-			$this->build(array('id'=>$post_id,'display'=>true));
+			$this->build(array('id'=>$post_id,'before'=>'','after'=>'','display'=>true));
 		}
 		function admin($hook)
 		{
@@ -129,7 +132,7 @@ if (!class_exists('SubHeading')) {
 		{
 			add_submenu_page(
 				'plugins.php',
-				'Manage '.$name,
+				'Manage '.$this->name,
 				$this->name,
 				'administrator',
 				$this->tag,
@@ -160,7 +163,7 @@ if (!class_exists('SubHeading')) {
 				return array_merge(
 					$links,
 					array(sprintf(
-						'<a href="plugins.php?page=%s">%s</a>',
+						'<a href="'.$_SERVER['PHP_SELF'].'?page=%s">%s</a>',
 						$this->tag, __('Settings')
 					))
 				);
