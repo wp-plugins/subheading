@@ -3,8 +3,8 @@ Contributors: 36Flavours
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=HHRDCSQBLHFY4&lc=GB&item_name=Steve%20Whiteley%20%2836Flavours%29&currency_code=GBP&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted
 Tags: sub, heading, title, admin, template, page, post, byline, rss
 Requires at least: 2.8.2
-Tested up to: 2.9
-Stable tag: 1.3.1
+Tested up to: 2.9.1
+Stable tag: 1.4
 
 Adds the ability to easily add and display a sub title/heading on both posts and pages.
 
@@ -22,7 +22,7 @@ Here we go:
 
 1. Upload the `subheading` folder to the `/wp-content/plugins/` directory.
 2. Activate the plugin through the 'Plugins' menu in WordPress.
-3. Place `<?php if (function_exists('the_subheading')) { the_subheading('<p>', '</p>'); } ?>` in your template files where you want it to appear.
+3. Place `<?php if (function_exists('the_subheading')) { the_subheading('<p>', '</p>'); } ?>` in your template files where you want it to appear, or enable the `Automatically append before the content` option on the settings page.
 4. Add the subheading content using the standard WordPress edit page.
 
 The settings for this plugin are found by navigating to the `Plugins` menu and selecting `SubHeading`.
@@ -55,6 +55,12 @@ Some plugins will hide the element containing the post title, which is this elem
 
 You can prevent the repositioning of the input via the options page.
 
+= What are the `Before` and `After` inputs used for? =
+
+If you are using the `Automatically append before the content` option, you can include custom content before and after the subheading is displayed.
+
+For example, setting Before to `<h3>` and after to `</h3>` will wrap the subheading in a h3 tag.
+
 == Screenshots ==
 
 1. The SubHeading option is displayed directly below the main title.
@@ -62,6 +68,9 @@ You can prevent the repositioning of the input via the options page.
 
 == Changelog ==
 
+= 1.4 =
+* Added auto inclusion option of the subheading.
+* Removed tidy option, all data is now removed during the uninstall process.
 = 1.3.1 =
 * Missed error reporting on nonce check.
 = 1.3 =

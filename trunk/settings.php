@@ -53,9 +53,21 @@ if (array_key_exists('updated', $_GET)) :
 			</tr>
 			<tr valign="top">
 				<td>
-					<label for="subheading[tidy]">
-						<input name="subheading[tidy]" type="checkbox" id="subheading[tidy]" value="1" <?php if (array_key_exists('tidy', $this->options)) { checked('1', $this->options['tidy']); } ?> />
-						Remove all traces of plugin on deactivation.
+					<label for="subheading[append]">
+						<input name="subheading[append]" type="checkbox" id="subheading[append]" value="1" <?php if (array_key_exists('append', $this->options)) { checked('1', $this->options['append']); } ?> />
+						Automatically append before the content.
+					</label>
+				</td>
+			</tr>
+			<tr id="subheading-append" valign="top">
+				<td>
+					<label for="subheading[before]">
+						Before:
+						<input name="subheading[before]" type="text" id="subheading[before]" value="<?php if (array_key_exists('before', $this->options)) { echo esc_attr($this->options['before']); } ?>" />
+					</label>
+					<label for="subheading[after]">
+						After:
+						<input name="subheading[after]" type="text" id="subheading[after]" value="<?php if (array_key_exists('after', $this->options)) { echo esc_attr($this->options['after']); } ?>" />
 					</label>
 				</td>
 			</tr>
