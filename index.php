@@ -3,7 +3,7 @@
 Plugin Name: SubHeading
 Plugin URI: http://wordpress.org/extend/plugins/subheading/
 Description: Adds the ability to show a subheading for posts and pages using a custom field. To display subheadings place <code>&lt;?php the_subheading(); ?&gt;</code> in your template file. 
-Version: 1.3.1
+Version: 1.4
 Author: 36Flavours
 Author URI: http://36flavours.com
 */
@@ -29,9 +29,13 @@ if (!class_exists('SubHeading')) {
 					add_action('admin_enqueue_scripts', array(&$this, 'admin'), 10, 1);
 				}
 				add_filter('plugin_row_meta', array(&$this, 'settings_meta'), 10, 2);
+				register_activation_hook(__FILE__, array(&$this, 'activate'));
+				register_uninstall_hook(__FILE__, array(&$this, 'uninstall'));
+			} else {
+				add_filter('the_title_rss', array(&$this, 'rss'));
+				add_filter('the_subheading', array(&$this, 'build'), 1);
+				add_filter('the_content', array(&$this, 'prepend'));
 			}
-			add_filter('the_title_rss', array(&$this, 'rss'));
-			add_filter('the_subheading', array(&$this, 'build'), 1);
 		}
 		function activate()
 		{
@@ -39,19 +43,23 @@ if (!class_exists('SubHeading')) {
 				update_option($this->tag, array(
 					'posts' => 1,
 					'rss' => 1,
-					'lists' => 1
+					'lists' => 1,
+					'before' => '<h3>',
+					'after' => '</h3>'
 				));
 			}
 		}
-		function deactivate()
+		function uninstall()
 		{
-			if (isset($this->options['tidy'])) {
-				$posts = get_posts('numberposts=-1&post_type=any&meta_key=_subheading');
-				foreach ($posts as $post) {
-					delete_post_meta($post->ID, '_subheading');
-				}
-				update_option($this->tag, null);
+			$posts = get_posts(array(
+				'numberposts' => -1,
+				'post_type' => 'any',
+				'meta_key' => $this->meta_key
+			));
+			foreach ($posts as $post) {
+				delete_post_meta($post->ID, $this->meta_key);
 			}
+			update_option($this->tag, null);
 		}
 		function build($args)
 		{
@@ -71,10 +79,20 @@ if (!class_exists('SubHeading')) {
 		}
 		function meta()
 		{
-			add_meta_box($this->tag.'_postbox', $this->name, array(&$this, 'panel'), 'page', 'normal', 'high');
+			$this->meta_box('page');
 			if (isset($this->options['posts'])) {
-				add_meta_box($this->tag.'_postbox', $this->name, array(&$this, 'panel'), 'post', 'normal', 'high');
+				$this->meta_box('post');
 			}
+		}
+		function meta_box($type='page')
+		{
+			add_meta_box(
+				$this->tag.'_postbox',
+				$this->name, array(&$this, 'panel'),
+				$type,
+				'normal',
+				'high'
+			);
 		}
 		function panel()
 		{
@@ -107,6 +125,16 @@ if (!class_exists('SubHeading')) {
 			}
 			return $title;
 		}
+		function prepend($content)
+		{
+			if (isset($this->options['append']) && $subHeading = $this->value()) {
+				if (isset($this->options['before']) && isset($this->options['after'])) {
+					return $this->options['before'].$this->value().$this->options['after'].$content;
+				}
+				return wpautop($this->value()).$content;
+			}
+			return $content;
+		}
 		function column_heading($columns)
 		{
 			$columns[$this->tag] = $this->name;
@@ -114,17 +142,24 @@ if (!class_exists('SubHeading')) {
 		}
 		function column_value($column_name, $post_id)
 		{
-			$this->build(array('id'=>$post_id,'before'=>'','after'=>'','display'=>true));
+			$this->build(array(
+				'id' => $post_id,
+				'before' => '',
+				'after' => '',
+				'display' => true
+			));
 		}
 		function admin($hook)
 		{
-			if ($hook == 'edit.php' || $hook == 'edit-pages.php') {
+			if ($hook == 'edit.php' || $hook == 'edit-pages.php' || $hook == 'plugins_page_subheading') {
 				wp_enqueue_script($this->name, WP_PLUGIN_URL.'/'.$this->tag.'/admin.js');
-				add_filter('manage_pages_columns', array(&$this, 'column_heading'));
-				add_filter('manage_pages_custom_column', array(&$this, 'column_value'), 10, 2);
-				if (isset($this->options['posts'])) {
-					add_filter('manage_posts_columns', array(&$this, 'column_heading'));
-					add_filter('manage_posts_custom_column', array(&$this, 'column_value'), 10, 2);
+				if ($hook != 'plugins_page_subheading') {
+					add_filter('manage_pages_columns', array(&$this, 'column_heading'));
+					add_filter('manage_pages_custom_column', array(&$this, 'column_value'), 10, 2);
+					if (isset($this->options['posts'])) {
+						add_filter('manage_posts_columns', array(&$this, 'column_heading'));
+						add_filter('manage_posts_custom_column', array(&$this, 'column_value'), 10, 2);
+					}
 				}
 			}
 		}
@@ -141,19 +176,32 @@ if (!class_exists('SubHeading')) {
 		}
 		function settings_init()
 		{
-			register_setting($this->tag.'_options', $this->tag, array(&$this, 'settings_validate'));
+			register_setting(
+				$this->tag.'_options',
+				$this->tag,
+				array(&$this, 'settings_validate')
+			);
 		}
 		function settings_validate($inputs)
 		{
 			if (is_array($inputs)) {
 				foreach ($inputs AS $key => $input) {
-					$inputs[$key] = ($inputs[$key] == 1 ? 1 : 0);
+					if (in_array($key, array('before', 'after'))) {
+						if (empty($inputs[$key])) {
+							unset($inputs[$key]);
+						} else {
+							$inputs[$key] = format_to_post($inputs[$key]);
+						}
+					} else {
+						$inputs[$key] = ($inputs[$key] == 1 ? 1 : 0);
+					}
 				}
 				return $inputs;
 			}
 		}
 		function settings_page()
 		{
+			add_action('admin_enqueue_scripts', array(&$this, 'admin'), 10, 1);
 			include_once('settings.php');
 		}
 		function settings_meta($links, $file)
@@ -173,14 +221,19 @@ if (!class_exists('SubHeading')) {
 	}
 	$subHeading = new SubHeading();
 	if (isset($subHeading)) {
-		register_activation_hook(__FILE__, array(&$subHeading, 'activate'));
-		register_deactivation_hook(__FILE__, array(&$subHeading, 'deactivate'));
-		function the_subheading($b='',$a='',$d=true,$i=false){
-			return apply_filters('the_subheading', array('before'=>$b,'after'=>$a,'display'=>$d,'id'=>$i));
+		function the_subheading($b='',$a='',$d=true,$i=false)
+		{
+			return apply_filters(
+				'the_subheading',
+				array('before'=>$b,'after'=>$a,'display'=>$d,'id'=>$i)
+			);
 		}
 		function get_the_subheading($i=false,$b='',$a='')
 		{
-			return apply_filters('the_subheading', array('before'=>$b,'after'=>$a,'id'=>$i));
+			return apply_filters(
+				'the_subheading',
+				array('before'=>$b,'after'=>$a,'id'=>$i)
+			);
 		}
 	}
 }
