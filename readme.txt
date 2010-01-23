@@ -68,6 +68,8 @@ For example, setting Before to `<h3>` and after to `</h3>` will wrap the subhead
 
 == Changelog ==
 
+= 1.4.1 =
+* Fixed issue where subheading was appended to multiple columns on admin edit pages. 
 = 1.4 =
 * Added auto inclusion option of the subheading.
 * Removed tidy option, all data is now removed during the uninstall process.
