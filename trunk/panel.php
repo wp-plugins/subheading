@@ -1,10 +1,11 @@
 <?php
 if (!isset($this->options['reposition'])) :
 ?><script type="text/javascript">
-	jQuery(function() {
-		jQuery("#<?=$this->tag?>_postbox")
+	jQuery(function($) {
+		var subheading = $("#<?=$this->tag?>_postbox")
 			.hide()
 			.find("input")
+			.attr('tabindex', 1)
 			.appendTo("#titlewrap");
 	});
 </script>
