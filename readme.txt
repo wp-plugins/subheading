@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=HHRDC
 Tags: sub, heading, title, admin, template, page, post, byline, rss
 Requires at least: 2.8.2
 Tested up to: 2.9.1
-Stable tag: 1.4
+Stable tag: 1.4.1
 
 Adds the ability to easily add and display a sub title/heading on both posts and pages.
 
@@ -69,7 +69,7 @@ For example, setting Before to `<h3>` and after to `</h3>` will wrap the subhead
 == Changelog ==
 
 = 1.4.1 =
-* Fixed issue where subheading was appended to multiple columns on admin edit pages. 
+* Fixed issue where subheading was appended to multiple columns on admin edit pages.
 = 1.4 =
 * Added auto inclusion option of the subheading.
 * Removed tidy option, all data is now removed during the uninstall process.
