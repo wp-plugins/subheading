@@ -7,7 +7,7 @@ if (array_key_exists('updated', $_GET)) :
 <?php endif; ?>
 <div class="wrap">
 	<div id="icon-plugins" class="icon32"><br /></div>
-	<h2><?=$this->name?> <?php _e('Settings'); ?></h2>
+	<h2><?php echo $this->name; ?> <?php _e('Settings'); ?></h2>
 	<form method="post" action="options.php">
 		<?php settings_fields($this->tag.'_options'); ?>
 		<table class="form-table">
