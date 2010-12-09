@@ -3,8 +3,8 @@ Contributors: 36Flavours
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=HHRDCSQBLHFY4&lc=GB&item_name=Steve%20Whiteley%20%2836Flavours%29&currency_code=GBP&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted
 Tags: sub, heading, title, admin, template, page, post, byline, rss
 Requires at least: 2.8.2
-Tested up to: 2.9.1
-Stable tag: 1.4.2
+Tested up to: 3.0.3
+Stable tag: 1.5
 
 Adds the ability to easily add and display a sub title/heading on both posts and pages.
 
@@ -68,6 +68,9 @@ For example, setting Before to `<h3>` and after to `</h3>` will wrap the subhead
 
 == Changelog ==
 
+= 1.5 =
+* Added ability to allow subheading to be searched.
+* Bug fixed where multiple subheadings could be stored for a single post.
 = 1.4.2 =
 * Replaced all remaining PHP short tags.
 = 1.4.1 =

@@ -3,7 +3,7 @@
 Plugin Name: SubHeading
 Plugin URI: http://wordpress.org/extend/plugins/subheading/
 Description: Adds the ability to show a subheading for posts and pages using a custom field. To display subheadings place <code>&lt;?php the_subheading(); ?&gt;</code> in your template file. 
-Version: 1.4.2
+Version: 1.5
 Author: 36Flavours
 Author URI: http://36flavours.com
 */
@@ -35,12 +35,16 @@ if (!class_exists('SubHeading')) {
 				add_filter('the_title_rss', array(&$this, 'rss'));
 				add_filter('the_subheading', array(&$this, 'build'), 1);
 				add_filter('the_content', array(&$this, 'prepend'));
+				if (isset($this->options['search'])) {
+					add_action('posts_where_request', array(&$this, 'search'));
+				}
 			}
 		}
 		function activate()
 		{
 			if (!$this->options) {
 				update_option($this->tag, array(
+					'search' => 1,
 					'posts' => 1,
 					'rss' => 1,
 					'lists' => 1,
@@ -110,7 +114,7 @@ if (!class_exists('SubHeading')) {
 			if (empty($subHeading)) {
 				delete_post_meta($post_id, $this->meta_key, $subHeading);
 			} else if (!update_post_meta($post_id, $this->meta_key, $subHeading)){
-				add_post_meta($post_id, $this->meta_key, $subHeading);
+				add_post_meta($post_id, $this->meta_key, $subHeading, true);
 			}
 		}
 		function value($id=false)
@@ -219,6 +223,24 @@ if (!class_exists('SubHeading')) {
 				);
 			}
 			return $links;
+		}
+		function search($where)
+		{
+			if (is_search()) {
+				global $wpdb, $wp;
+				$where = preg_replace(
+					"/\({$wpdb->posts}.post_title (LIKE '%{$wp->query_vars['s']}%')\)/i",
+					"$0 OR ($wpdb->postmeta.meta_value $1)",
+					$where
+				);
+				add_filter('posts_join_request', array(&$this, 'search_join'));
+			}
+			return $where;
+		}
+		function search_join($join)
+		{
+			global $wpdb;
+			return $join .= " LEFT JOIN $wpdb->postmeta ON ($wpdb->postmeta.meta_key = '_{$this->tag}' AND $wpdb->posts.ID = $wpdb->postmeta.post_id) ";
 		}
 	}
 	$subHeading = new SubHeading();

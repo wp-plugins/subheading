@@ -13,6 +13,14 @@ if (array_key_exists('updated', $_GET)) :
 		<table class="form-table">
 			<tr valign="top">
 				<td>
+					<label for="subheading[search]">
+						<input name="subheading[search]" type="checkbox" id="subheading[search]" value="1" <?php if (array_key_exists('search', $this->options)) { checked('1', $this->options['search']); } ?> />
+						Extend search to include SubHeadings.
+					</label>
+				</td>
+			</tr>
+			<tr valign="top">
+				<td>
 					<label for="subheading[rss]">
 						<input name="subheading[rss]" type="checkbox" id="subheading[rss]" value="1" <?php if (array_key_exists('rss', $this->options)) { checked('1', $this->options['rss']); } ?> />
 						Append to RSS feeds.
