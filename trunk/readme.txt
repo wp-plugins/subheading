@@ -1,20 +1,24 @@
 === SubHeading ===
-Contributors: 36Flavours
-Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=HHRDCSQBLHFY4&lc=GB&item_name=Steve%20Whiteley%20%2836Flavours%29&currency_code=GBP&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted
-Tags: sub, heading, title, admin, template, page, post, byline, rss
-Requires at least: 2.8.2
-Tested up to: 3.0.3
-Stable tag: 1.5
+Contributors: stvwhtly
+Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=MTEDNQFNQVYLS
+Tags: sub, heading, title, admin, template, page, post, byline, rss, custom, h2, headline, intro, text
+Requires at least: 3.1
+Tested up to: 3.1.4
+Stable tag: 1.6
+License: GPLv2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Adds the ability to easily add and display a sub title/heading on both posts and pages.
+Adds the ability to easily add and display a sub title/heading on any public post type.
 
 == Description ==
 
-This plugin uses a custom field to allow sub titles/headings to be added to both posts and pages.
+This plugin uses a custom field to allow sub titles/headings to be added to any post type, including pages, posts and any public custom post type.
 
 The custom subheading field is re-positioned so it is directly below the main title when editing.
 
-By default subheadings are also appended to RSS feeds and the admin edit post/page lists.
+Updates to your theme templates may be required in order for you to output the subheading values, please refer to the Installation instructions.
+
+By default subheadings are also appended to RSS feeds and the admin edit post/page lists, these options and more can be modified via the settings page.
 
 == Installation ==
 
@@ -31,9 +35,11 @@ If you are not within `the_loop`, you can use `get_the_subheading($postID);` to 
 
 == Frequently Asked Questions ==
 
-= How do I enable subheadings on posts? =
+= How do I enable subheadings on posts and custom post types? =
 
-By default subheadings are disabled for posts, you can enable them on the settings page `Plugins > SubHeading > Enable for posts as well as pages`.
+By default subheadings are only enabled for pages, you can enable them for posts or any public custom post type via the `Settings > Reading` page.
+
+Just check the box that says `Enable on Posts.` or the required post type.
 
 = What custom field name does it use? =
 
@@ -57,17 +63,30 @@ You can prevent the repositioning of the input via the options page.
 
 = What are the `Before` and `After` inputs used for? =
 
-If you are using the `Automatically append before the content` option, you can include custom content before and after the subheading is displayed.
+If you are using the option to automatically wrap the SubHeading content, you can include custom content before and after the subheading is displayed.
 
 For example, setting Before to `<h3>` and after to `</h3>` will wrap the subheading in a h3 tag.
+
+== Upgrade Notice ==
+
+Version 1.6 introduces the ability to enable subheadings on any public post type, including custom post types via the settings page, which has been merged into the `Settings > Reading` admin page instead of the plugin specific settings page.
+
+Please ensure that subheadings are enabled for the required post types by checking the settings page in this new location.
 
 == Screenshots ==
 
 1. The SubHeading option is displayed directly below the main title.
-2. Settings are managed using a plugin options page.
+2. Settings are managed via the Settings > Reading page.
 
 == Changelog ==
 
+= 1.6 =
+* Created uninstall.php to fix incorrectly referenced uninstall hook.
+* Moved plugin settings to the `Settings > Reading` section.
+* Added ability to enable SubHeadings on all public post types, including custom post types.
+* Modified donate link.
+* Updated screenshots and added plugin directory banner.
+* Minor code reformatting.
 = 1.5 =
 * Added ability to allow subheading to be searched.
 * Bug fixed where multiple subheadings could be stored for a single post.
