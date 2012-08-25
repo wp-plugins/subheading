@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: sub, heading, title, admin, template, page, post, byline, rss, custom, h2, headline, intro, text
 Requires at least: 3.1
 Tested up to: 3.1.4
-Stable tag: 1.6
+Stable tag: 1.6.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -80,6 +80,8 @@ Please ensure that subheadings are enabled for the required post types by checki
 
 == Changelog ==
 
+= 1.6.1 =
+* Corrected location of assets directory.
 = 1.6 =
 * Created uninstall.php to fix incorrectly referenced uninstall hook.
 * Moved plugin settings to the `Settings > Reading` section.
