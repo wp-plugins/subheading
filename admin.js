@@ -1,20 +1,20 @@
-jQuery(document).ready(function($) {
-	$('.column-subheading').hide();
-	$('td.subheading').each(function() {
-		$('td.post-title:first', $(this).parents('tr'))
+jQuery( document ).ready( function( $ ) {
+	$( '.column-subheading' ).hide();
+	$( 'td.subheading' ).each( function() {
+		$( 'td.post-title:first', $( this ).parents( 'tr' ) )
 			.children(':first')
 			.after($(this).html());
-	});
-	$('input[name="subheading[append]"]').click(function(e) {
-		if (e.setup) {
+	} );
+	$( '#subheading_append' ).click( function( e ) {
+		if ( e.setup ) {
 			e.preventDefault();
 		}
-		$('#subheading-append').css(
+		$( '#subheading_before, #subheading_after' ).parent().css(
 			'display',
-			($(this).is(':checked') ? '' : 'none')
+			( $( this ).is( ':checked' ) ? '' : 'none' )
 		);
-	}).trigger({
+	} ).trigger( {
 		type: 'click',
 		setup: true 
-	});
-});
+	} );
+} );
