@@ -75,6 +75,21 @@ The output can be customised slightly using the "Before" and "After" fields, how
 
 To display SubHeadings, place `<?php if (function_exists('the_subheading')) { the_subheading('<p>', '</p>'); } ?>` in your template files where you want the SubHeading to appear.
 
+= Why do tags such as <br /> and <p> disappear from my SubHeadings?
+
+By default the plugin uses the default list of allowed tags, which can result in certain tags being removed.
+
+This can be resolved by adding valid tags to the allowed list using the `subheading_tags` filter.
+
+If for example you would like to enable the <br /> tag in SubHeadings, add the following function to your theme functions.php file.
+
+`add_filter( 'subheading_tags', function( $tags ) {
+	$tags['br'] = array();
+	return $tags;
+} );`
+
+Note here that the key ('br') is the tag name and the array should be a list of valid attributes for that tag, for example `array('class', 'id')`.
+
 == Upgrade Notice ==
 
 Version 1.6 introduces the ability to enable subheadings on any public post type, including custom post types via the settings page, which has been merged into the `Settings > Reading` admin page instead of the plugin specific settings page.
@@ -90,6 +105,7 @@ Please ensure that subheadings are enabled for the required post types by checki
 
 = 1.6.3 =
 * Added is_main_query() check to `the_content` filter to ensure subheadings are only appended when cycling through the primary loop.
+* Added valid tags filter to allow additional tags to be used in SubHeadings. See "Why do tags such as <br /> and <p> disappear from my SubHeadings?" FAQ for more information.
 = 1.6.2 =
 * Renamed the "Wrap the SubHeading content." setting to "Automatically display SubHeadings before post content.".
 * Modified activate function.

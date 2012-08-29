@@ -105,12 +105,17 @@ if ( ! class_exists( 'SubHeading' ) ) {
 			if ( ! current_user_can( 'edit_' . ( $_POST['post_type'] == 'page' ? 'page' : 'post' ), $post_id ) ) {
 				return $post_id;
 			}
-			$subheading = wp_filter_kses( $_POST[$this->tag . '_value'] );
+			$subheading = addslashes( wp_kses( stripslashes( $_POST[$this->tag . '_value'] ), $this->allowedTags() ) );
 			if ( empty( $subheading ) ) {
 				delete_post_meta( $post_id, $this->meta_key, $subheading );
 			} else if ( ! update_post_meta( $post_id, $this->meta_key, $subheading ) ){
 				add_post_meta( $post_id, $this->meta_key, $subheading, true );
 			}
+		}
+		function allowedTags()
+		{
+			global $allowedtags;
+			return apply_filters( 'subheading_tags', $allowedtags );
 		}
 		function value( $id=false )
 		{
@@ -304,5 +309,5 @@ if ( ! class_exists( 'SubHeading' ) ) {
 			'the_subheading',
 			array('before'=>$b,'after'=>$a,'id'=>$i)
 		);
-	}
+	}	
 }
