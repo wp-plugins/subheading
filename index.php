@@ -115,7 +115,8 @@ if ( ! class_exists( 'SubHeading' ) ) {
 		function allowedTags()
 		{
 			global $allowedtags;
-			return apply_filters( 'subheading_tags', $allowedtags );
+			$subHeadingTags = $allowedtags;
+			return apply_filters( 'subheading_tags', $subHeadingTags );
 		}
 		function value( $id=false )
 		{
