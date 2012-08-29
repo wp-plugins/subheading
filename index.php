@@ -3,7 +3,7 @@
 Plugin Name: SubHeading
 Plugin URI: http://wordpress.org/extend/plugins/subheading/
 Description: Adds the ability to show a subheading for posts, pages and custom post types. To display subheadings place <code>&lt;?php the_subheading(); ?&gt;</code> in your template file. 
-Version: 1.6.1
+Version: 1.6.2
 Author: StvWhtly
 Author URI: http://stv.whtly.com
 */
@@ -32,7 +32,7 @@ if ( ! class_exists( 'SubHeading' ) ) {
 			} else {
 				add_filter( 'the_title_rss', array( &$this, 'rss' ) );
 				add_filter( 'the_subheading', array( &$this, 'build' ), 1 );
-				add_filter( 'the_content', array( &$this, 'prepend' ) );
+				add_filter( 'the_content', array( &$this, 'append' ) );
 				if ( isset( $this->options['search'] ) ) {
 					add_action( 'posts_where_request', array( &$this, 'search' ) );
 				}
@@ -46,10 +46,11 @@ if ( ! class_exists( 'SubHeading' ) ) {
 					'post_types' => array('page'),
 					'rss' => 1,
 					'lists' => 1,
+					'append' => 1,
 					'before' => '<h3>',
 					'after' => '</h3>'
 				) );
-			} else if ( isset( $this->options['posts'] ) ) {
+			} else {
 				$this->options['post_types'] = array( 'page' );
 				if (isset($this->options['posts'])) {
 					$this->options['post_types'][] = 'post';
@@ -123,7 +124,7 @@ if ( ! class_exists( 'SubHeading' ) ) {
 			}
 			return $title;
 		}
-		function prepend( $content )
+		function append( $content )
 		{
 			if ( isset( $this->options['append'] ) && $subheading = $this->value() ) {
 				if ( isset($this->options['before'] ) && isset( $this->options['after'] ) ) {
@@ -170,7 +171,7 @@ if ( ! class_exists( 'SubHeading' ) ) {
 		 	add_settings_field(
 		 		$this->tag . '_settings',
 				$this->name . ' <div class="description">' . $description . '</div>',
-				array(&$this, 'settings_field'),
+				array(&$this, 'settings_fields'),
 				'reading',
 				'default'
 		 	);
@@ -197,7 +198,7 @@ if ( ! class_exists( 'SubHeading' ) ) {
 				return $inputs;
 			}
 		}
-		function settings_field()
+		function settings_fields()
 		{
 			$fields = array(
 				'search' => 'Allow search to find matches based on SubHeading values.',
@@ -207,7 +208,7 @@ if ( ! class_exists( 'SubHeading' ) ) {
 				'tags' => 'Apply shortcode filters.',
 				'lists' => 'Display on admin edit lists.',
 				'append' => array(
-					'description' => 'Wrap the SubHeading content.',
+					'description' => 'Automatically display SubHeadings before post content.',
 					'break' => false
 				),
 				'before' => array(
