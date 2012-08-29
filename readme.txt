@@ -88,8 +88,10 @@ Please ensure that subheadings are enabled for the required post types by checki
 
 == Changelog ==
 
+= 1.6.3 =
+* Added is_main_query() check to `the_content` filter to ensure subheadings are only appended when cycling through the primary loop.
 = 1.6.2 =
-* Renamed the "Wrap the SubHeading content." setting to " Automatically display SubHeadings before post content.".
+* Renamed the "Wrap the SubHeading content." setting to "Automatically display SubHeadings before post content.".
 * Modified activate function.
 * Renamed some plugin class methods.
 * Added FAQ regarding customisation of the SubHeading output.
