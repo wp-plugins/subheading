@@ -3,8 +3,8 @@ Contributors: stvwhtly
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=MTEDNQFNQVYLS
 Tags: sub, heading, title, admin, template, page, post, byline, rss, custom, h2, headline, intro, text
 Requires at least: 3.1
-Tested up to: 3.1.4
-Stable tag: 1.6.5
+Tested up to: 3.4.1
+Stable tag: 1.6.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -26,7 +26,7 @@ Here we go:
 
 1. Upload the `subheading` folder to the `/wp-content/plugins/` directory.
 2. Activate the plugin through the 'Plugins' menu in WordPress.
-3. Place `<?php if (function_exists('the_subheading')) { the_subheading('<p>', '</p>'); } ?>` in your template files where you want it to appear, or enable the `Automatically display SubHeadings before post content` option on the settings page.
+3. Place `<?php if (function_exists('the_subheading')) { the_subheading('<p>', '</p>'); } ?>` in your template files where you want it to appear, or enable the `Automatically display subheadings before post content` option on the settings page.
 4. Add the subheading content using the standard WordPress edit page.
 
 The settings for this plugin are found by navigating to the `Settings` menu and selecting `Reading`, with the options displayed towards the bottom of the page.
@@ -63,23 +63,23 @@ You can prevent the repositioning of the input via the options page.
 
 = What are the `Before` and `After` inputs used for? =
 
-If you are using the option to automatically wrap the SubHeading content, you can include custom content before and after the subheading is displayed.
+If you are using the option to automatically wrap the subheading content, you can include custom content before and after the subheading is displayed.
 
 For example, setting Before to `<h3>` and after to `</h3>` will wrap the subheading in a h3 tag.
 
-= How can I stop SubHeadings appearing in places I don't want them to? =
+= How can I stop subheadings appearing in places I don't want them to? =
 
-Using the "Automatically display SubHeadings before post content." setting will prepend any SubHeading value before outputting any post content.
+Using the "Automatically display subheadings before post content." setting will prepend any subheading value before outputting any post content.
 
 The output can be customised slightly using the "Before" and "After" fields, however if you prefer more customisation and control it is probably best to disable this setting and edit the output within your theme templates.
 
-To display SubHeadings, place `<?php if (function_exists('the_subheading')) { the_subheading('<p>', '</p>'); } ?>` in your template files where you want the SubHeading to appear.
+To display subheadings, place `<?php if (function_exists('the_subheading')) { the_subheading('<p>', '</p>'); } ?>` in your template files where you want the subheading to appear.
 
-= Why do tags such as `<br />` and `<p>` disappear from my SubHeadings? =
+= Why do tags some tags disappear from my subheadings? =
 
-By default the plugin uses the default list of allowed tags, which can result in certain tags being removed. This can be resolved by adding valid tags to the allowed list using the `subheading_tags` filter.
+By default the plugin uses the default list of allowed tags, which can result in certain tags such as `<br />` and `<p>` being removed. This can be resolved by adding valid tags to the allowed list using the `subheading_tags` filter.
 
-If, for example, you wanted to enable the `<br />` tag in SubHeadings, include the following function to your theme functions.php file.
+If, for example, you wanted to enable the `<br />` tag in subheadings, include the following function to your theme functions.php file.
 
 `add_filter( 'subheading_tags', function( $tags ) {
 	$tags['br'] = array();
@@ -90,36 +90,40 @@ Note here that the array key `'br'` is the tag name and the values array should 
 
 == Upgrade Notice ==
 
-Version 1.6 introduces the ability to enable SubHeadings on any public post type, including custom post types via the settings page, which has been merged into the `Settings > Reading` admin page instead of the plugin specific settings page.
-
-Please ensure that subheadings are enabled for the required post types by checking the settings page in this new location.
+= 1.6 =
+Introduced the ability to enable subheadings on any public post type via the settings page, which has been merged into the `Settings > Reading` admin page instead of the plugin specific settings page. Ensure subheadings are enabled for required post types by checking settings in the new location.
 
 == Screenshots ==
 
-1. The SubHeading option is displayed directly below the main title.
+1. The subheading option is displayed directly below the main title.
 2. Settings are managed via the Settings > Reading page.
 
 == Changelog ==
 
+= 1.6.6 =
+* Fixed incorrect FAQ heading.
+* Modified readme changelog.
+* Fixed error during uninstall processs.
 = 1.6.5 =
 * Updated wrong information in readme file relating to the location of the settings page which moved in version 1.6.
 * Added missing/unclosed heading tag for last FAQ in the readme file.
+* Escaped tags in readme file changelog.
 = 1.6.4 =
 * Fixed readme file syntax relating to new FAQ added in version 1.6.3.
 = 1.6.3 =
 * Added `is_main_query()` check to `the_content` filter to ensure subheadings are only appended when cycling through the primary loop.
-* Added valid tags filter to allow additional tags to be used in SubHeadings. See "Why do tags such as `<br />` and `<p>` disappear from my SubHeadings?" FAQ for more information.
+* Added valid tags filter to allow additional tags to be used in subheadings. See "Why do tags such as `<br />` and `<p>` disappear from my subheadings?" FAQ for more information.
 = 1.6.2 =
-* Renamed the "Wrap the SubHeading content." setting to "Automatically display SubHeadings before post content.".
+* Renamed the "Wrap the SubHeading content." setting to "Automatically display subheadings before post content.".
 * Modified activate function.
 * Renamed some plugin class methods.
-* Added FAQ regarding customisation of the SubHeading output.
+* Added FAQ regarding customisation of the subheading output.
 = 1.6.1 =
 * Corrected location of assets directory.
 = 1.6 =
 * Created uninstall.php to fix incorrectly referenced uninstall hook.
 * Moved plugin settings to the `Settings > Reading` section.
-* Added ability to enable SubHeadings on all public post types, including custom post types.
+* Added ability to enable subheadings on all public post types, including custom post types.
 * Modified donate link.
 * Updated screenshots and added plugin directory banner.
 * Minor code reformatting.
@@ -155,7 +159,7 @@ Please ensure that subheadings are enabled for the required post types by checki
 * Added new plugin settings pages with default actions.
 = 0.3.3 =
 * Added ability to prevent repositioning of the subheading input on edit page.
-* SubHeadings are now displayed on admin edit posts / pages lists.
+* Subheadings are now displayed on admin edit posts / pages lists.
 = 0.3.2 =
 * Fixed `get_the_subheading` function to return correctly.
 = 0.3.1 =

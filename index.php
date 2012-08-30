@@ -3,7 +3,7 @@
 Plugin Name: SubHeading
 Plugin URI: http://wordpress.org/extend/plugins/subheading/
 Description: Adds the ability to show a subheading for posts, pages and custom post types. To display subheadings place <code>&lt;?php the_subheading(); ?&gt;</code> in your template file. 
-Version: 1.6.5
+Version: 1.6.6
 Author: StvWhtly
 Author URI: http://stv.whtly.com
 */
@@ -207,14 +207,14 @@ if ( ! class_exists( 'SubHeading' ) ) {
 		function settings_fields()
 		{
 			$fields = array(
-				'search' => 'Allow search to find matches based on SubHeading values.',
+				'search' => 'Allow search to find matches based on subheading values.',
 				'rss' => 'Append to RSS feeds.',
 				'reposition' => 'Prevent reposition of input under the title when editing.',
 				'lists' => 'Display on admin edit lists.',
 				'tags' => 'Apply shortcode filters.',
 				'lists' => 'Display on admin edit lists.',
 				'append' => array(
-					'description' => 'Automatically display SubHeadings before post content.',
+					'description' => 'Automatically display subheadings before post content.',
 					'break' => false
 				),
 				'before' => array(
