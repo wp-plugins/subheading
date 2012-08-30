@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: sub, heading, title, admin, template, page, post, byline, rss, custom, h2, headline, intro, text
 Requires at least: 3.1
 Tested up to: 3.1.4
-Stable tag: 1.6.4
+Stable tag: 1.6.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -29,7 +29,7 @@ Here we go:
 3. Place `<?php if (function_exists('the_subheading')) { the_subheading('<p>', '</p>'); } ?>` in your template files where you want it to appear, or enable the `Automatically display SubHeadings before post content` option on the settings page.
 4. Add the subheading content using the standard WordPress edit page.
 
-The settings for this plugin are found by navigating to the `Plugins` menu and selecting `SubHeading`.
+The settings for this plugin are found by navigating to the `Settings` menu and selecting `Reading`, with the options displayed towards the bottom of the page.
 
 If you are not within `the_loop`, you can use `get_the_subheading($postID);` to fetch the value for a particular page or post.
 
@@ -75,13 +75,11 @@ The output can be customised slightly using the "Before" and "After" fields, how
 
 To display SubHeadings, place `<?php if (function_exists('the_subheading')) { the_subheading('<p>', '</p>'); } ?>` in your template files where you want the SubHeading to appear.
 
-= Why do tags such as `<br />` and `<p>` disappear from my SubHeadings?
+= Why do tags such as `<br />` and `<p>` disappear from my SubHeadings? =
 
-By default the plugin uses the default list of allowed tags, which can result in certain tags being removed.
+By default the plugin uses the default list of allowed tags, which can result in certain tags being removed. This can be resolved by adding valid tags to the allowed list using the `subheading_tags` filter.
 
-This can be resolved by adding valid tags to the allowed list using the `subheading_tags` filter.
-
-If for example you would like to enable the `<br />` tag in SubHeadings, add the following function to your theme functions.php file.
+If, for example, you wanted to enable the `<br />` tag in SubHeadings, include the following function to your theme functions.php file.
 
 `add_filter( 'subheading_tags', function( $tags ) {
 	$tags['br'] = array();
@@ -92,7 +90,7 @@ Note here that the array key `'br'` is the tag name and the values array should 
 
 == Upgrade Notice ==
 
-Version 1.6 introduces the ability to enable subheadings on any public post type, including custom post types via the settings page, which has been merged into the `Settings > Reading` admin page instead of the plugin specific settings page.
+Version 1.6 introduces the ability to enable SubHeadings on any public post type, including custom post types via the settings page, which has been merged into the `Settings > Reading` admin page instead of the plugin specific settings page.
 
 Please ensure that subheadings are enabled for the required post types by checking the settings page in this new location.
 
@@ -103,11 +101,14 @@ Please ensure that subheadings are enabled for the required post types by checki
 
 == Changelog ==
 
+= 1.6.5 =
+* Updated wrong information in readme file relating to the location of the settings page which moved in version 1.6.
+* Added missing/unclosed heading tag for last FAQ in the readme file.
 = 1.6.4 =
 * Fixed readme file syntax relating to new FAQ added in version 1.6.3.
 = 1.6.3 =
-* Added is_main_query() check to `the_content` filter to ensure subheadings are only appended when cycling through the primary loop.
-* Added valid tags filter to allow additional tags to be used in SubHeadings. See "Why do tags such as <br /> and <p> disappear from my SubHeadings?" FAQ for more information.
+* Added `is_main_query()` check to `the_content` filter to ensure subheadings are only appended when cycling through the primary loop.
+* Added valid tags filter to allow additional tags to be used in SubHeadings. See "Why do tags such as `<br />` and `<p>` disappear from my SubHeadings?" FAQ for more information.
 = 1.6.2 =
 * Renamed the "Wrap the SubHeading content." setting to "Automatically display SubHeadings before post content.".
 * Modified activate function.
