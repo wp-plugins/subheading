@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: sub, heading, title, admin, template, page, post, byline, rss, custom, h2, headline, intro, text
 Requires at least: 3.2.1
 Tested up to: 3.4.2
-Stable tag: 1.6.7
+Stable tag: 1.6.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -100,6 +100,8 @@ Introduced the ability to enable subheadings on any public post type via the set
 
 == Changelog ==
 
+= 1.6.8 =
+* Fixed undefined variable warning using the get_the_subheading() function.
 = 1.6.7 =
 * Added backwards compatibility for is_main_query for WP version prior to 3.3.
 = 1.6.6 =
