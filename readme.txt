@@ -3,7 +3,7 @@ Contributors: stvwhtly
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=MTEDNQFNQVYLS
 Tags: sub, heading, title, admin, template, page, post, byline, rss, custom, h2, headline, intro, text
 Requires at least: 3.2.1
-Tested up to: 3.4.2
+Tested up to: 3.5
 Stable tag: 1.6.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -77,7 +77,9 @@ To display subheadings, place `<?php if (function_exists('the_subheading')) { th
 
 = Why do tags some tags disappear from my subheadings? =
 
-By default the plugin uses the default list of allowed tags, which can result in certain tags such as `<br />` and `<p>` being removed. This can be resolved by adding valid tags to the allowed list using the `subheading_tags` filter.
+By default the plugin uses the default list of allowed tags, which can result in certain tags such as `<br />` and `<p>` being removed from subheadings or settings.
+
+This can be resolved by adding valid tags to the allowed list using either the `subheading_tags` or `subheading_settings_tags` filters.
 
 If, for example, you wanted to enable the `<br />` tag in subheadings, include the following function to your theme functions.php file.
 
@@ -86,7 +88,60 @@ If, for example, you wanted to enable the `<br />` tag in subheadings, include t
 	return $tags;
 } );`
 
-Note here that the array key `'br'` is the tag name and the values array should be a list of valid attributes for that tag, for example `$tags['span'] = array('class', 'id');`.
+Note here that the array key `'br'` is the tag name and the values array should be a list of valid attributes for that tag, for example `$tags['span'] = array('class' => array(), 'id' => array());`.
+
+The list of default allowed tags for both subheadings and settings (before and after) is as follows:
+
+`$allowedtags = array(
+	'a' => array(
+		'href' => array(),
+		'title' => array()),
+	'abbr' => array(
+		'title' => array()),
+	'acronym' => array(
+		'title' => array()),
+	'b' => array(),
+	'blockquote' => array(
+		'cite' => array ()),
+	'cite' => array(),
+	'code' => array(),
+	'del' => array(
+		'datetime' => array()),
+	'em' => array(),
+	'i' => array(),
+	'q' => array(
+		'cite' => array()),
+	'strike' => array(),
+	'strong' => array(),
+);`
+
+The settings validation additioanlly allows the following tags.
+
+`...
+	'h1' => array(
+		'class' => array(),
+		'id' => array()),
+	'h2' => array(
+		'class' => array(),
+		'id' => array()),
+	'h3' => array(
+		'class' => array(),
+		'id' => array()),
+	'h4' => array(
+		'class' => array(),
+		'id' => array()),
+	'h5' => array(
+		'class' => array(),
+		'id' => array()),
+	'h6' => array(
+		'class' => array(),
+		'id' => array()),
+	'p' => array(
+		'class' => array(),
+		'id' => array()),
+...`
+
+If you require the use of an additional tags or attributes, they will need to be added using the filters.
 
 == Upgrade Notice ==
 
@@ -100,6 +155,11 @@ Introduced the ability to enable subheadings on any public post type via the set
 
 == Changelog ==
 
+= 1.6.9 =
+* Replaced WP_PLUGIN_URL with plugins_url function call.
+* Added validation to settings post types and sanitisation of before and after values.
+* Adjusted information relating to the addition of allowed tags in the FAQs.
+* Changed capability checking on save to post type capabilities rather than edit_post and edit_page capabilities.
 = 1.6.8 =
 * Fixed undefined variable warning using the get_the_subheading() function.
 = 1.6.7 =

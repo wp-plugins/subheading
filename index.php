@@ -3,7 +3,7 @@
 Plugin Name: SubHeading
 Plugin URI: http://wordpress.org/extend/plugins/subheading/
 Description: Adds the ability to show a subheading for posts, pages and custom post types. To display subheadings place <code>&lt;?php the_subheading(); ?&gt;</code> in your template file. 
-Version: 1.6.8
+Version: 1.6.9
 Author: StvWhtly
 Author URI: http://stv.whtly.com
 */
@@ -99,24 +99,26 @@ if ( ! class_exists( 'SubHeading' ) ) {
 		}
 		function save( $post_id )
 		{
+			global $post_type;
 			if ( ! isset( $_POST[$this->tag.'nonce'] ) || ! wp_verify_nonce( $_POST[$this->tag . 'nonce'], 'wp_' . $this->tag ) ) {
 				return $post_id;
 			}
-			if ( ! current_user_can( 'edit_' . ( $_POST['post_type'] == 'page' ? 'page' : 'post' ), $post_id ) ) {
+			$post_type_object = get_post_type_object( $post_type );
+			if ( ! current_user_can( $post_type_object->cap->edit_post, $post_id ) ) {
 				return $post_id;
 			}
-			$subheading = addslashes( wp_kses( stripslashes( $_POST[$this->tag . '_value'] ), $this->allowedTags() ) );
+			$subheading = wp_kses( $_POST[$this->tag . '_value'], $this->allowed_tags() );
 			if ( empty( $subheading ) ) {
 				delete_post_meta( $post_id, $this->meta_key, $subheading );
 			} else if ( ! update_post_meta( $post_id, $this->meta_key, $subheading ) ){
 				add_post_meta( $post_id, $this->meta_key, $subheading, true );
 			}
 		}
-		function allowedTags()
+		function allowed_tags()
 		{
 			global $allowedtags;
-			$subHeadingTags = $allowedtags;
-			return apply_filters( 'subheading_tags', $subHeadingTags );
+			$tags = $allowedtags;
+			return apply_filters( 'subheading_tags', $tags );
 		}
 		function value( $id=false )
 		{
@@ -159,7 +161,7 @@ if ( ! class_exists( 'SubHeading' ) ) {
 		function admin( $hook )
 		{
 			if ( in_array( $hook, array( 'edit.php', 'edit-pages.php', 'options-reading.php' ) ) ) {
-				wp_enqueue_script( $this->name, WP_PLUGIN_URL . '/' . $this->tag . '/admin.js' );
+				wp_enqueue_script( $this->name, plugins_url( $this->tag.'/admin.js' , dirname( __FILE__ ) ) );
 				if ( isset( $this->options['post_types'] ) && is_array( $this->options['post_types'] ) ) {
 					foreach ( $this->options['post_types'] AS $post_type ) {
 						if ( in_array( $post_type, array( 'post', 'page' )) ) {
@@ -192,10 +194,20 @@ if ( ! class_exists( 'SubHeading' ) ) {
 			if ( is_array( $inputs ) ) {
 				foreach ( $inputs AS $key => $input ) {
 					if ( in_array( $key, array( 'before', 'after', 'post_types' ) ) ) {
+						if ( 'post_types' == $key ) {
+							$post_types = array();
+							$settings_post_types = $this->settings_post_types( 'names' );
+							foreach ( $inputs[$key] AS $post_type ) {
+								if ( in_array( $post_type, $settings_post_types ) ) {
+									$post_types[] = $post_type;
+								}
+							}
+							$inputs[$key] = $post_types;
+						} else {
+							$inputs[$key] = wp_kses( $inputs[$key], $this->settings_allowed_tags() );
+						}
 						if ( empty( $inputs[$key] ) ) {
 							unset( $inputs[$key] );
-						} else {
-							$inputs[$key] = format_to_post( $inputs[$key] );
 						}
 					} else {
 						$inputs[$key] = ( $inputs[$key] == 1 ? 1 : 0 );
@@ -203,6 +215,19 @@ if ( ! class_exists( 'SubHeading' ) ) {
 				}
 				return $inputs;
 			}
+		}
+		function settings_allowed_tags()
+		{
+			global $allowedtags;
+			$settings_tags = $allowedtags;
+			$additional_tags = array( 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p' );
+			foreach ( $additional_tags AS $tag ) {
+				$settings_tags[$tag] = array(
+					'class' => array(),
+					'id' => array()
+				);
+			}
+			return apply_filters( 'subheading_settings_tags', $settings_tags );
 		}
 		function settings_fields()
 		{
@@ -231,7 +256,7 @@ if ( ! class_exists( 'SubHeading' ) ) {
 					'prepend' => true
 				),
 			);
-			$post_types = get_post_types( array( 'public' => true ), 'objects' );
+			$post_types = $this->settings_post_types();
 			unset( $post_types['attachment'] );
 			foreach ( $post_types AS $id => $post_type ) {
 				$fields['post_type_'.$id] = array(
@@ -276,6 +301,10 @@ if ( ! class_exists( 'SubHeading' ) ) {
 				);
 			}
 			return $links;
+		}
+		function settings_post_types($output = 'objects')
+		{
+			return get_post_types( array( 'public' => true ), $output );
 		}
 		function search( $where )
 		{
