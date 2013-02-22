@@ -3,7 +3,7 @@
 Plugin Name: SubHeading
 Plugin URI: http://wordpress.org/extend/plugins/subheading/
 Description: Adds the ability to show a subheading for posts, pages and custom post types. To display subheadings place <code>&lt;?php the_subheading(); ?&gt;</code> in your template file. 
-Version: 1.6.9
+Version: 1.7
 Author: StvWhtly
 Author URI: http://stv.whtly.com
 */
@@ -16,9 +16,9 @@ if ( ! class_exists( 'SubHeading' ) ) {
 		var $options = null;
 		function SubHeading()
 		{
-			if ( $options = get_option( $this->tag ) ) {
+			if ( $options = get_option( $this->tag, array() ) ) {
 				$this->options = $options;
-			}	
+			}
 			$this->meta_key = '_' . $this->tag;
 			if ( is_admin() ) {
 				add_action( 'admin_menu', array( &$this, 'meta' ) );
@@ -52,10 +52,10 @@ if ( ! class_exists( 'SubHeading' ) ) {
 				) );
 			} else {
 				$this->options['post_types'] = array( 'page' );
-				if (isset($this->options['posts'])) {
+				if ( isset( $this->options['posts'] ) ) {
 					$this->options['post_types'][] = 'post';
 				}
-				unset($this->options['posts']);
+				unset( $this->options['posts'] );
 				update_option( $this->tag, $this->options );
 			}
 		}
@@ -282,7 +282,7 @@ if ( ! class_exists( 'SubHeading' ) ) {
 						type="<?php _e( isset( $field['type'] ) ? $field['type'] : 'checkbox' ); ?>"
 						id="<?php _e( $this->tag . '_' . $id ); ?>"
 						value="<?php _e( isset( $field['value'] ) ? $field['value'] : 1 ); ?>"
-						<?php if ( array_key_exists( $id, $field['options'] ) || ( isset( $field['value'] ) && in_array( $field['value'], $field['options'] ) ) )  { echo 'checked="checked"'; } ?> />
+						<?php if ( is_array( $field['options'] ) && array_key_exists( $id, $field['options'] ) || ( isset( $field['value'] ) && in_array( $field['value'], $field['options'] ) ) )  { echo 'checked="checked"'; } ?> />
 					<?php if ( ! isset( $field['prepend'] ) || $field['prepend'] == false ) : ?>
 					<?php _e( $field['description'] ); ?>
 					<?php endif; ?>
@@ -337,18 +337,28 @@ if ( ! class_exists( 'SubHeading' ) ) {
 		}
 	}
 	$subHeading = new SubHeading();
-	function the_subheading($b='',$a='',$d=true,$i=false)
+	function the_subheading( $before = '', $after = '', $display = true, $id = false )
 	{
 		return apply_filters(
 			'the_subheading',
-			array('before'=>$b,'after'=>$a,'display'=>$d,'id'=>$i)
+			array(
+				'before' => $before,
+				'after' => $after,
+				'display' => $display,
+				'id' => $id
+			)
 		);
 	}
-	function get_the_subheading($i=false,$b='',$a='')
+	function get_the_subheading( $id = false, $before = '', $after = '' )
 	{
 		return apply_filters(
 			'the_subheading',
-			array('before'=>$b,'after'=>$a,'display'=>false,'id'=>$i)
+			array(
+				'before' => $before,
+				'after' => $after,
+				'display' => false,
+				'id' => $id
+			)
 		);
 	}	
 }
