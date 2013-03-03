@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: sub, heading, title, admin, template, page, post, byline, rss, custom, h2, headline, intro, text
 Requires at least: 3.2.1
 Tested up to: 3.5.1
-Stable tag: 1.7
+Stable tag: 1.7.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -145,6 +145,18 @@ The settings validation additioanlly allows the following tags.
 
 If you require the use of an additional tags or attributes, they will need to be added using the filters.
 
+= How can I limit the length of the subheading? =
+
+As of version 1.7.1 you can make use of the 'subheading' filter to manipulate the final output.
+
+For example, limiting the subheading to 5 words can be done by adding the following to your theme functions.php file.
+
+`add_filter( 'subheading', function( $value ) {
+	return wp_trim_words( $value, 5 );
+} );`
+
+This example make use of the [wp_trim_words](http://codex.wordpress.org/Function_Reference/wp_trim_words "WordPress Codex") function introduced in WordPress 3.3.
+
 == Upgrade Notice ==
 
 = 1.7 =
@@ -156,6 +168,11 @@ Stricter validation rules were added to the before and after settings values, pl
 2. Settings are managed via the Settings > Reading page.
 
 == Changelog ==
+
+= 1.7.1 =
+* Added new `subheading` filter to allow output to be manipulated.
+* Modified upgrade process to resolve some upgrade issues.
+* Added some basic inline documentation to the main plugin file.
 
 = 1.7 =
 * Replaced WP_PLUGIN_URL with plugins_url function call.
