@@ -155,7 +155,13 @@ For example, limiting the subheading to 5 words can be done by adding the follow
 	return wp_trim_words( $value, 5 );
 } );`
 
-This example make use of the [wp_trim_words](http://codex.wordpress.org/Function_Reference/wp_trim_words "WordPress Codex") function introduced in WordPress 3.3.
+This example makes use of the [wp_trim_words](http://codex.wordpress.org/Function_Reference/wp_trim_words "WordPress Codex") function introduced in WordPress 3.3.
+
+= Why do the code snippets / examples from the readme not work? =
+
+If you are using older versions of PHP (< 5.3.0), you will not be able to make use of anonymous functions used in some of these examples.
+
+Further information on the use of anonymous functions and WordPress can be read in the [WordPress Codex](http://codex.wordpress.org/Function_Reference/add_filter#Beware WordPress Codex Reference).
 
 == Upgrade Notice ==
 
@@ -168,6 +174,10 @@ Stricter validation rules were added to the before and after settings values, pl
 2. Settings are managed via the Settings > Reading page.
 
 == Changelog ==
+
+= 1.7.2 =
+* Markup tags are now removed from the subheadings displayed on the admin post list columns.
+* Added FAQ to explain some information on the use of anonymous functions used in examples.
 
 = 1.7.1 =
 * Added new `subheading` filter to allow output to be manipulated.
