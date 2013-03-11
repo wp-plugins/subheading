@@ -210,8 +210,7 @@ if ( ! class_exists( 'SubHeading' ) ) {
 		 */
 		function value( $id = false )
 		{
-			global $post;
-			$value = get_post_meta( ( $id !== false ? $id : $post->ID ), $this->meta_key, true );
+			$value = get_post_meta( ( $id !== false ? $id : get_the_ID() ), $this->meta_key, true );
 			return apply_filters( 'subheading', $value );
 		}
 		
@@ -531,6 +530,7 @@ if ( ! class_exists( 'SubHeading' ) ) {
 	
 	/**
 	 * Output a subheading value with some basic options.
+	 * 
 	 * @param string $before Text to output before.
 	 * @param string $after Text to output after.
 	 * @param boolean $display True to output the value or False for it to be returned.
@@ -552,6 +552,7 @@ if ( ! class_exists( 'SubHeading' ) ) {
 	
 	/**
 	 * Return a subheading value using some basic options.
+	 * 
 	 * @param int $id Post ID to return the subheading for.
 	 * @param string $before Text to output before.
 	 * @param string $after Text to output after.
