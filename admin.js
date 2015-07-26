@@ -5,7 +5,10 @@ jQuery( document ).ready( function( $ ) {
 			.children(':first')
 			.after($(this).html());
 	} );
-	$( '#subheading_append' ).click( function( e ) {
+	$( '#subheading_append' ).on( 'click', function( e ) {
+		
+		console.log('append');
+		
 		$( '#subheading_before, #subheading_after' ).parent().css(
 			'display',
 			( $( this ).is( ':checked' ) ? '' : 'none' )
