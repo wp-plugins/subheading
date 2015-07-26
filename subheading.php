@@ -1,9 +1,11 @@
 <?php
 /*
 Plugin Name: SubHeading
-Plugin URI: http://wordpress.org/extend/plugins/subheading/
+Plugin URI: https://wordpress.org/plugins/subheading/
 Description: Adds the ability to show a subheading for posts, pages and custom post types. To display subheadings place <code>&lt;?php the_subheading(); ?&gt;</code> in your template file. 
-Version: 1.7.4
+Version: 1.8
+Text Domain: subheading
+Domain Path: /languages
 Author: StvWhtly
 Author URI: http://stv.whtly.com
 */
@@ -58,6 +60,7 @@ if ( ! class_exists( 'SubHeading' ) ) {
 					add_action( 'posts_where_request', array( &$this, 'search' ) );
 				}
 			}
+			add_action( 'plugins_loaded', array( &$this, 'plugins_loaded' ) );
 		}
 		
 		/**
@@ -79,6 +82,18 @@ if ( ! class_exists( 'SubHeading' ) ) {
 				unset( $this->options['posts'] );
 				update_option( $this->tag, $this->options );
 			}
+		}
+		
+		/**
+		 * Load the translation files from the languages directory.
+		 */
+		function plugins_loaded()
+		{
+			load_plugin_textdomain(
+				$this->tag,
+				false,
+				dirname( plugin_basename(__FILE__) ) . '/languages/'
+			);
 		}
 		
 		/**
@@ -382,25 +397,25 @@ if ( ! class_exists( 'SubHeading' ) ) {
 		function settings_fields()
 		{
 			$fields = array(
-				'search' => 'Allow search to find matches based on subheading values.',
-				'rss' => 'Append to RSS feeds.',
-				'reposition' => 'Prevent reposition of input under the title when editing.',
-				'lists' => 'Display on admin edit lists.',
-				'tags' => 'Apply shortcode filters.',
-				'lists' => 'Display on admin edit lists.',
+				'search' => __( 'Allow search to find matches based on subheading values.', $this->tag ),
+				'rss' => __( 'Append to RSS feeds.', $this->tag ),
+				'reposition' => __( 'Prevent reposition of input under the title when editing.', $this->tag ),
+				'lists' => __( 'Display on admin edit lists.', $this->tag ),
+				'tags' => __( 'Apply shortcode filters.', $this->tag ),
+				'lists' => __( 'Display on admin edit lists.', $this->tag ),
 				'append' => array(
-					'description' => 'Automatically display subheadings before post content.',
+					'description' => __( 'Automatically display subheadings before post content.', $this->tag ),
 					'break' => false
 				),
 				'before' => array(
-					'description' => 'Before:',
+					'description' => __( 'Before', $this->tag ) . ':',
 					'value' => ( array_key_exists( 'before', $this->options ) ? esc_attr( $this->options['before'] ) : '' ),
 					'type' => 'text',
 					'break' => false,
 					'prepend' => true
 				),
 				'after' => array(
-					'description' => 'After:',
+					'description' => __( 'After', $this->tag ) . ':',
 					'value' => ( array_key_exists( 'after', $this->options ) ? esc_attr( $this->options['after'] ) : '' ),
 					'type' => 'text',
 					'prepend' => true
@@ -410,7 +425,7 @@ if ( ! class_exists( 'SubHeading' ) ) {
 			unset( $post_types['attachment'] );
 			foreach ( $post_types AS $id => $post_type ) {
 				$fields['post_type_'.$id] = array(
-					'description' => 'Enable on ' . $post_type->labels->name . '.',
+					'description' => __( 'Enable on', $this->tag ) . ' ' . $post_type->labels->name . '.',
 					'name' => $this->tag . '[post_types][]',
 					'value' => $id,
 					'options' => ( isset( $this->options['post_types'] ) ? $this->options['post_types'] : array() )
@@ -429,15 +444,15 @@ if ( ! class_exists( 'SubHeading' ) ) {
 					?>
 					<label>
 						<?php if ( isset( $field['prepend'] ) && $field['prepend'] === true ) : ?>
-						<?php _e( $field['description'] ); ?>
+						<?php echo esc_html( $field['description'] ); ?>
 						<?php endif; ?>
-						<input name="<?php _e( isset( $field['name'] ) ? $field['name'] : $this->tag . '[' . $id . ']' ); ?>"
-							type="<?php _e( isset( $field['type'] ) ? $field['type'] : 'checkbox' ); ?>"
-							id="<?php _e( $this->tag . '_' . $id ); ?>"
-							value="<?php _e( isset( $field['value'] ) ? $field['value'] : 1 ); ?>"
+						<input name="<?php echo ( isset( $field['name'] ) ? esc_attr( $field['name'] ) : esc_attr( $this->tag ) . '[' . esc_attr( $id ) . ']' ); ?>"
+							type="<?php echo esc_attr( isset( $field['type'] ) ? $field['type'] : 'checkbox' ); ?>"
+							id="<?php echo esc_attr( $this->tag . '_' . $id ); ?>"
+							value="<?php echo esc_attr( isset( $field['value'] ) ? $field['value'] : 1 ); ?>"
 							<?php if ( is_array( $field['options'] ) && array_key_exists( $id, $field['options'] ) || ( isset( $field['value'] ) && in_array( $field['value'], $field['options'] ) ) )  { echo 'checked="checked"'; } ?> />
 						<?php if ( ! isset( $field['prepend'] ) || $field['prepend'] == false ) : ?>
-						<?php _e( $field['description'] ); ?>
+						<?php echo esc_html( $field['description'] ); ?>
 						<?php endif; ?>
 					</label>
 					<?php if ( ! isset( $field['break'] ) || $field['break'] === true ) : ?><br /><?php endif; ?>
@@ -445,9 +460,13 @@ if ( ! class_exists( 'SubHeading' ) ) {
 				}
 				?>
 				<p class="description">
-					Configuration options for the <a href="https://wordpress.org/plugins/<?php esc_attr_e( $this->tag ); ?>/" target="_blank">
-						<?php esc_html_e( $this->name ); ?>
-					</a> plugin.
+					<?php printf(
+						/* translators: %s: Link to plugin directory */
+						__( 'Configuration options for the %s plugin.', $this->tag ),
+						'<a href="https://wordpress.org/plugins/' . esc_attr( $this->tag ) . '/" target="_blank">' .
+							esc_attr( $this->name ) .
+						'</a>'
+					); ?>
 				</p>
 			</fieldset>
 			<?php
