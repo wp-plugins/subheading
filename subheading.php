@@ -3,7 +3,7 @@
 Plugin Name: SubHeading
 Plugin URI: http://wordpress.org/extend/plugins/subheading/
 Description: Adds the ability to show a subheading for posts, pages and custom post types. To display subheadings place <code>&lt;?php the_subheading(); ?&gt;</code> in your template file. 
-Version: 1.7.3
+Version: 1.7.4
 Author: StvWhtly
 Author URI: http://stv.whtly.com
 */
@@ -42,13 +42,11 @@ if ( ! class_exists( 'SubHeading' ) ) {
 		{
 			$this->options = $this->get_options();
 			$this->meta_key = '_' . $this->tag;
-			if ( is_admin() ) {
+			if ( is_admin() && ! ( defined('DOING_AJAX') && DOING_AJAX ) ) {
 				add_action( 'admin_menu', array( &$this, 'meta' ) );
 				add_action( 'save_post', array( &$this, 'save' ) );
 				add_action( 'admin_init', array( &$this, 'settings_init' ) );
-				if ( isset( $this->options['lists'] ) ) {
-					add_action( 'admin_enqueue_scripts', array( &$this, 'admin' ), 10, 1 );
-				}
+				add_action( 'admin_enqueue_scripts', array( &$this, 'admin' ), 10, 1 );
 				add_filter( 'plugin_row_meta', array( &$this, 'settings_meta' ), 10, 2 );
 				register_activation_hook( __FILE__, array( &$this, 'activate' ) );
 				$this->upgrade();
@@ -263,8 +261,10 @@ if ( ! class_exists( 'SubHeading' ) ) {
 						if ( in_array( $post_type, array( 'post', 'page' )) ) {
 							$post_type .= 's';
 						}
-						add_filter( 'manage_'.$post_type.'_columns', array( &$this, 'column_heading' ) );
-						add_filter( 'manage_'.$post_type.'_custom_column', array( &$this, 'column_value' ), 10, 2 );
+						if ( isset( $this->options['lists'] ) ) {
+							add_filter( 'manage_'.$post_type.'_columns', array( &$this, 'column_heading' ) );
+							add_filter( 'manage_'.$post_type.'_custom_column', array( &$this, 'column_value' ), 10, 2 );
+						}
 					}
 				}
 			}
@@ -307,10 +307,9 @@ if ( ! class_exists( 'SubHeading' ) ) {
 		 */
 		function settings_init()
 		{
-			$description = 'Configuration options for the <a href="http://wordpress.org/extend/plugins/' . $this->tag . '/" target="_blank">' . $this->name . '</a> plugin.';
 		 	add_settings_field(
 		 		$this->tag . '_settings',
-				$this->name . ' <div class="description">' . $description . '</div>',
+				$this->name,
 				array(&$this, 'settings_fields'),
 				'reading',
 				'default'
@@ -417,30 +416,41 @@ if ( ! class_exists( 'SubHeading' ) ) {
 					'options' => ( isset( $this->options['post_types'] ) ? $this->options['post_types'] : array() )
 				);
 			}
-			foreach ( $fields AS $id => $field ) {
-				if ( ! is_array( $field ) ) {
-					$field = array( 'description' => $field );
-				}
-				if ( ! isset( $field['options'] ) ) {
-					$field['options'] = $this->options;
+			?>
+			<fieldset>
+				<?php
+				foreach ( $fields AS $id => $field ) {
+					if ( ! is_array( $field ) ) {
+						$field = array( 'description' => $field );
+					}
+					if ( ! isset( $field['options'] ) ) {
+						$field['options'] = $this->options;
+					}
+					?>
+					<label>
+						<?php if ( isset( $field['prepend'] ) && $field['prepend'] === true ) : ?>
+						<?php _e( $field['description'] ); ?>
+						<?php endif; ?>
+						<input name="<?php _e( isset( $field['name'] ) ? $field['name'] : $this->tag . '[' . $id . ']' ); ?>"
+							type="<?php _e( isset( $field['type'] ) ? $field['type'] : 'checkbox' ); ?>"
+							id="<?php _e( $this->tag . '_' . $id ); ?>"
+							value="<?php _e( isset( $field['value'] ) ? $field['value'] : 1 ); ?>"
+							<?php if ( is_array( $field['options'] ) && array_key_exists( $id, $field['options'] ) || ( isset( $field['value'] ) && in_array( $field['value'], $field['options'] ) ) )  { echo 'checked="checked"'; } ?> />
+						<?php if ( ! isset( $field['prepend'] ) || $field['prepend'] == false ) : ?>
+						<?php _e( $field['description'] ); ?>
+						<?php endif; ?>
+					</label>
+					<?php if ( ! isset( $field['break'] ) || $field['break'] === true ) : ?><br /><?php endif; ?>
+					<?php
 				}
 				?>
-				<label>
-					<?php if ( isset( $field['prepend'] ) && $field['prepend'] === true ) : ?>
-					<?php _e( $field['description'] ); ?>
-					<?php endif; ?>
-					<input name="<?php _e( isset( $field['name'] ) ? $field['name'] : $this->tag . '[' . $id . ']' ); ?>"
-						type="<?php _e( isset( $field['type'] ) ? $field['type'] : 'checkbox' ); ?>"
-						id="<?php _e( $this->tag . '_' . $id ); ?>"
-						value="<?php _e( isset( $field['value'] ) ? $field['value'] : 1 ); ?>"
-						<?php if ( is_array( $field['options'] ) && array_key_exists( $id, $field['options'] ) || ( isset( $field['value'] ) && in_array( $field['value'], $field['options'] ) ) )  { echo 'checked="checked"'; } ?> />
-					<?php if ( ! isset( $field['prepend'] ) || $field['prepend'] == false ) : ?>
-					<?php _e( $field['description'] ); ?>
-					<?php endif; ?>
-				</label>
-				<?php if ( ! isset( $field['break'] ) || $field['break'] === true ) : ?><br /><?php endif; ?>
-				<?php
-			}
+				<p class="description">
+					Configuration options for the <a href="https://wordpress.org/plugins/<?php esc_attr_e( $this->tag ); ?>/" target="_blank">
+						<?php esc_html_e( $this->name ); ?>
+					</a> plugin.
+				</p>
+			</fieldset>
+			<?php
 		}
 		
 		/**
