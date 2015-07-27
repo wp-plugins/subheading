@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: sub, heading, title, admin, template, page, post, byline, rss, custom, h2, headline, intro, text
 Requires at least: 3.2.1
 Tested up to: 4.2.3
-Stable tag: 1.8
+Stable tag: 1.8.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -21,6 +21,8 @@ Updates to your theme templates may be required in order for you to output the s
 By default subheadings are also appended to RSS feeds and the admin edit post/page lists, these options and more can be modified via the settings page.
 
 Following a plugin review by Alison Barrett (WordPress.com VIP) a number of improvements were introduced in version 1.7.
+
+**Languages:** Also available in Brazilian Portuguese (Português do Brasil by mauriciomesquita).
 
 == Installation ==
 
@@ -174,6 +176,9 @@ Stricter validation rules were added to the before and after settings values, pl
 2. Settings are managed via the Settings > Reading page.
 
 == Changelog ==
+
+= 1.8.1 =
+* Added Portuguese (Brazil) translation. Credit to [mauriciomesquita](https://wordpress.org/support/profile/mauriciomesquita).
 
 = 1.8 =
 * Introduced translation support.
